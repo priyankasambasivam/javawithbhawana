@@ -6,9 +6,15 @@
 </head>
 <body>
 	<form action="LoginServlet" method="post">
-	<%if (session.getAttribute("error") != null) { %>
-		<%=session.getAttribute("error")%><br/>
+	<% 
+	String error = (String)request.getAttribute("error");
+	String message = (String)request.getAttribute("message");
+	if (error != null) { %>
+		<%=error%>
+	<% } if (message != null) { %>
+		<%=message%>
 	<% } %>
+	<br/>
 	<input type="text" name="username" placeholder="Enter username"/> <br/>
 	<input type="password" name="password" placeholder="Enter password"/>
 	<input type="submit" value="Login"/>
