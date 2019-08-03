@@ -1,7 +1,6 @@
 package com;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import dto.User;
 
-@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +32,6 @@ public class LoginServlet extends HttpServlet {
 		user.setPassword(password);
 		Connection conn = null;
 		ResultSet result = null;
-		System.out.println("Inside LoginServlet");
 		try {
 			HttpSession session = request.getSession();
 			if (username != null && password != null) {
@@ -48,10 +44,10 @@ public class LoginServlet extends HttpServlet {
 				result = stmt.executeQuery(query);
 				if (result != null && result.next() && result.getInt(1) >= 1) {
 					session.setAttribute("userObj", user);
-					response.sendRedirect("logout.html");
+					response.sendRedirect("logout.jsp");
 				} else {
-					session.setAttribute("error", "Invalid username/password");
-					response.sendRedirect("login.jsp");
+					request.setAttribute("error", "<h3 style='color:red;font-weight:bold;'>Invalid username/password</h3>");
+					request.getRequestDispatcher("/login.jsp").forward(request,response);
 				}
 			}
 		} catch (Exception e) {
